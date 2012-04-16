@@ -2,7 +2,7 @@
 
 After tapping this repo with
 
-    brew tap edc/rdkit
+    brew tap edc/homebrew-rdkit
 
 You can install [rdkit](http://rdkit.org) with just one line of command:
 
@@ -10,7 +10,7 @@ You can install [rdkit](http://rdkit.org) with just one line of command:
 
 If you want to stay on the edge and use the latest and greatest from SVN:
 
-    brew install --head rdkit
+    brew install --HEAD rdkit
 
 ### Errors you might encounter
 
