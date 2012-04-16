@@ -1,6 +1,6 @@
 # Homebrew-rdkit: tap-ready formula for rdkit
 
-Make sure you Homebrew version is 0.9 and above. After tapping this repo with
+Make sure you Homebrew version is 0.9 or above. After tapping this repo with
 
     brew tap edc/homebrew-rdkit
 
