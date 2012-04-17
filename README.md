@@ -14,6 +14,12 @@ If you want to stay on the edge and use the latest and greatest from SVN:
 
     brew install --HEAD rdkit
 
+
+### Optional installs
+
+- `--with-java` will install the Java wrapper.
+- `--with-inchi` will install the InChI support. It will NOT use system InChI even it is present. Instead, it will always download InChI from http://inchitrust.org.
+
 ### Errors you might encounter
 
 - *Unsatisfied dependency: numpy*
