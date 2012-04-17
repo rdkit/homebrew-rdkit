@@ -1,22 +1,45 @@
 require 'formula'
 
+def swig_flags
+  return ARGV.include?('--with-java') ? '-DRDK_BUILD_SWIG_WRAPPERS=ON' : ''
+end
+
+def inchi_flags
+  return ARGV.include?('--with-inchi') ? '-DRDK_BUILD_INCHI_SUPPORT=ON' : ''
+end
+
 class Rdkit < Formula
   url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q1_2012/RDKit_2012_03_1.tgz'
-  head 'https://rdkit.svn.sourceforge.net/svnroot/rdkit', :using=> :svn
+  head 'https://rdkit.svn.sourceforge.net/svnroot/rdkit/trunk', :using=> :svn
   homepage 'http://rdkit.org'
   md5 'bec0098965bd6b66f74f87dd6172213a'
 
   depends_on 'cmake' => :build
+  depends_on 'wget' => :build
   depends_on 'swig'
   depends_on 'boost'
   depends_on 'numpy' => :python
 
+  def options
+    [
+      ['--with-java', "Build Java wrapper"],
+      ['--with-inchi', "Build InChI support"]
+    ]
+  end
+
   def install
-    if not File.exists? 'External/java_lib/junit.jar'
-      system "mkdir External/java_lib"
-      system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
+    # build java wrapper?
+    if not swig_flags.empty?
+      if not File.exists? 'External/java_lib/junit.jar'
+        system "mkdir External/java_lib"
+        system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
+      end
     end
-    system "cmake . #{std_cmake_parameters} -DRDK_INSTALL_INTREE=OFF -DRDK_BUILD_SWIG_WRAPPERS=ON -DRDK_INSTALL_STATIC_LIBS=OFF"
+    # build inchi support?
+    if not inchi_flags.empty?
+      system "cd External/INCHI-API; bash download-inchi.sh"
+    end
+    system "cmake . #{std_cmake_parameters} -DRDK_INSTALL_INTREE=OFF -DRDK_INSTALL_STATIC_LIBS=OFF #{swig_flags} #{inchi_flags}"
     ENV.j1
     system "make"
     system "make install"
