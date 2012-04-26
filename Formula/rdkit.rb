@@ -43,6 +43,8 @@ class Rdkit < Formula
     ENV.j1
     system "make"
     system "make install"
+    # Remove the ghost .cmake files which will cause a warning if we install them to /lib/
+    rm_f Dir["#{lib}/*.cmake"]
   end
 
   def caveats
