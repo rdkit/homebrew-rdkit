@@ -46,6 +46,28 @@ class Rdkit < Formula
 
     args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if with_java
     args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if with_inchi
+
+    # The CMake `FindPythonLibs` Module does not do a good job of finding the
+    # correct Python libraries to link to, so we help it out (until CMake is
+    # fixed). This code was cribbed from the opencv formula, which took it from
+    # the VTK formula. It uses the output from `python-config`.
+    which_python = "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
+    python_prefix = `python-config --prefix`.strip
+    # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+    if File.exist? "#{python_prefix}/Python"
+      # Python was compiled with --framework:
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+    else
+      python_lib = "#{python_prefix}/lib/lib#{which_python}"
+      if File.exists? "#{python_lib}.a"
+        args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
+      else
+        args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
+      end
+      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+    end
+
     args << '.'
     system "cmake", *args
     ENV.j1
