@@ -27,4 +27,17 @@ If you want to stay on the edge and use the latest and greatest from SVN:
 Homebrew does not manage Python package dependencies for you. You need to
 install `numpy` with `sudo easy_install numpy`.
 
+- *Fatal Python error: Interpreter not initialized (version mismatch?)*
 
+This indicates that rdkit or one of its dependencies (eg. boost) was linked
+against a different version of Python than the one you are using it with.
+Try rebuilding boost from source:
+
+    brew uninstall boost
+    brew install boost --build-from-source
+
+If that doesn't fix it, try comparing the output of these three commands:
+
+    python-config --prefix
+    find /usr/local/Cellar/rdkit -name rdBase.so -exec otool -L {} \;
+    find /usr/local/Cellar/boost -name libboost_python-mt.dylib -exec otool -L {} \;
