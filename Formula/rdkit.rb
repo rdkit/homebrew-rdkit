@@ -9,10 +9,10 @@ def with_inchi
 end
 
 class Rdkit < Formula
-  url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q1_2012/RDKit_2012_03_1.tgz'
-  head 'https://rdkit.svn.sourceforge.net/svnroot/rdkit/trunk', :using=> :svn
   homepage 'http://rdkit.org'
-  md5 'bec0098965bd6b66f74f87dd6172213a'
+  url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q2_2012/RDKit_2012_06_1.tgz'
+  head 'https://rdkit.svn.sourceforge.net/svnroot/rdkit/trunk', :using=> :svn
+  sha1 'a2961315877f393a75531e8900fc43038664b0a0'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
