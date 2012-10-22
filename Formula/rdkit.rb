@@ -10,9 +10,9 @@ end
 
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q2_2012/RDKit_2012_06_1.tgz'
+  url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q3_2012/RDKit_2012_09_1.tgz'
   head 'http://svn.code.sf.net/p/rdkit/code/trunk/', :using=> :svn
-  sha1 'a2961315877f393a75531e8900fc43038664b0a0'
+  sha1 'cae543325dd40d8f8ed09dd58fa4504dde153382'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
