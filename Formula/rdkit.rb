@@ -77,6 +77,10 @@ class Rdkit < Formula
     rm_f Dir["#{lib}/*.cmake"]
   end
 
+  def patches
+    DATA
+  end
+
   def caveats
     python_lib = `python --version 2>&1| sed -e 's/Python \\([0-9]\\.[0-9]\\)\\.[0-9]/python\\1/g'`.strip
 
@@ -92,3 +96,27 @@ class Rdkit < Formula
     EOS
   end
 end
+
+__END__
+--- a/CMakeLists.txt  2012-10-19 23:47:44.000000000 -0700
++++ b/CMakeLists.txt	2012-10-21 23:35:13.000000000 -0700
+@@ -151,6 +151,7 @@
+   set(Boost_THREAD_LIBRARY )
+ endif()
+
++find_package(Boost 1.39.0 COMPONENTS system REQUIRED)
+
+ # setup our compiler flags:
+ if(CMAKE_COMPILER_IS_GNUCXX)
+--- a/Code/GraphMol/CMakeLists.txt	2012-06-29 22:27:14.000000000 -0700
++++ b/Code/GraphMol/CMakeLists.txt	2012-10-21 23:36:25.000000000 -0700
+@@ -5,7 +5,7 @@
+               AtomIterators.cpp BondIterators.cpp Aromaticity.cpp Kekulize.cpp
+               MolDiscriminators.cpp ConjugHybrid.cpp AddHs.cpp RankAtoms.cpp
+               Matrices.cpp Chirality.cpp RingInfo.cpp Conformer.cpp
+-              SHARED LINK_LIBRARIES RDGeometryLib RDGeneral)
++	      SHARED LINK_LIBRARIES RDGeometryLib RDGeneral ${Boost_SYSTEM_LIBRARY})
+
+ rdkit_headers(Atom.h
+               atomic_data.h
+
