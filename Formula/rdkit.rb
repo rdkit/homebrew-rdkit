@@ -119,4 +119,14 @@ __END__
 
  rdkit_headers(Atom.h
                atomic_data.h
+--- a/Code/JavaWrappers/gmwrapper/CMakeLists.txt  2012-10-24 22:22:15.000000000 -0700
++++ b/Code/JavaWrappers/gmwrapper/CMakeLists.txt	2012-10-01 22:57:23.000000000 -0700
+@@ -74,7 +74,7 @@
 
+ SWIG_ADD_MODULE(GraphMolWrap "java" GraphMolJava.i )
+
+-SWIG_LINK_LIBRARIES(GraphMolWrap ${RDKit_Wrapper_Libs} )
++SWIG_LINK_LIBRARIES(GraphMolWrap ${RDKit_Wrapper_Libs} ${Boost_SYSTEM_LIBRARY})
+
+ # code adapted from the wrapper code for
+ # GDCM: http://gdcm.svn.sf.net/viewvc/gdcm/trunk/Wrapping/Java/CMakeLists.txt?view=markup
