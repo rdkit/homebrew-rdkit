@@ -10,7 +10,7 @@ You can install [rdkit](http://rdkit.org) with just one line of command:
 
     brew install rdkit
 
-If you want to stay on the edge and use the latest and greatest from SVN:
+If you want to stay on the edge and use the latest and greatest from <del>SVN</del> GitHub:
 
     brew install --HEAD rdkit
 
