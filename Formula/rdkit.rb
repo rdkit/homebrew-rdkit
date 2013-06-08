@@ -11,7 +11,7 @@ end
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
   url 'http://sourceforge.net/projects/rdkit/files/rdkit/Q1_2013/RDKit_2013_03_2.tgz'
-  head 'http://svn.code.sf.net/p/rdkit/code/trunk/', :using=> :svn
+  head 'https://github.com/rdkit/rdkit.git'
   sha1 '69143c2817527074bd83d0279614440b75ac6ab4'
 
   depends_on 'cmake' => :build
