@@ -10,10 +10,10 @@ end
 
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'https://github.com/rdkit/rdkit/archive/3fec9346f5.zip'
-  version '2013.09'
+  url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.zip'
+  version '2013.09.2'
   head 'https://github.com/rdkit/rdkit.git'
-  sha1 '426290e9fa9a2ff28ede415dad26c8b1fb35c647'
+  sha1 '73a843cb0db3eca7774d273f691b7e28d50656d0'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
@@ -44,6 +44,7 @@ class Rdkit < Formula
     args = std_cmake_parameters.split
     args << '-DRDK_INSTALL_INTREE=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF'
+    args << '-DRDK_BUILD_CPP_TESTS=OFF'
 
     args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if with_java
     args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if with_inchi
