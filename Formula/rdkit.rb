@@ -16,7 +16,7 @@ class Rdkit < Formula
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
-  depends_on 'swig'
+  depends_on 'swig' => :build
   depends_on 'boost'
   depends_on 'numpy' => :python
 
