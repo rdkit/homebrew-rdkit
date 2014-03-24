@@ -10,9 +10,9 @@ end
 
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.zip'
+  url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.tar.gz'
   head 'https://github.com/rdkit/rdkit.git'
-  sha1 '73a843cb0db3eca7774d273f691b7e28d50656d0'
+  sha1 '2c55843403ceba98db0069c6807b4a93fa225262'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
