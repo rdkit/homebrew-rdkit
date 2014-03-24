@@ -11,7 +11,6 @@ end
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
   url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.zip'
-  version '2013.09.2'
   head 'https://github.com/rdkit/rdkit.git'
   sha1 '73a843cb0db3eca7774d273f691b7e28d50656d0'
 
