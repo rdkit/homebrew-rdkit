@@ -1,13 +1,5 @@
 require 'formula'
 
-def with_java
-  return ARGV.include?('--with-java')
-end
-
-def with_inchi
-  return ARGV.include?('--with-inchi')
-end
-
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
   url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.tar.gz'
@@ -17,29 +9,25 @@ class Rdkit < Formula
     url 'https://github.com/rdkit/rdkit.git'
   end
 
+  option 'with-java', 'Build Java wrapper'
+  option 'with-inchi', 'Build with InChI support'
+
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
   depends_on 'swig' => :build
   depends_on 'boost'
   depends_on 'numpy' => :python
 
-  def options
-    [
-      ['--with-java', "Build Java wrapper"],
-      ['--with-inchi', "Build InChI support"]
-    ]
-  end
-
   def install
     # build java wrapper?
-    if with_java
+    if build.with? 'java'
       if not File.exists? 'External/java_lib/junit.jar'
         system "mkdir External/java_lib"
         system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
       end
     end
     # build inchi support?
-    if with_inchi
+    if build.with? 'inchi'
       system "cd External/INCHI-API; bash download-inchi.sh"
     end
 
@@ -48,8 +36,8 @@ class Rdkit < Formula
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF'
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
 
-    args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if with_java
-    args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if with_inchi
+    args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if build.with? 'java'
+    args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if build.with? 'inchi'
 
     # The CMake `FindPythonLibs` Module does not do a good job of finding the
     # correct Python libraries to link to, so we help it out (until CMake is
