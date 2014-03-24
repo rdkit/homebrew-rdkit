@@ -35,9 +35,9 @@ class Rdkit < Formula
 
     args = std_cmake_parameters.split
     args << '-DRDK_INSTALL_INTREE=OFF'
-    args << '-DRDK_INSTALL_STATIC_LIBS=OFF'
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
 
+    args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
     args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if build.with? 'java'
     args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if build.with? 'inchi'
 
