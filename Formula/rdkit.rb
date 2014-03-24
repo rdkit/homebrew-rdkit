@@ -11,12 +11,14 @@ class Rdkit < Formula
 
   option 'with-java', 'Build Java wrapper'
   option 'with-inchi', 'Build with InChI support'
+  option 'with-postgresql', 'Build with PostgreSQL database cartridge'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
   depends_on 'swig' => :build
   depends_on 'boost'
   depends_on 'numpy' => :python
+  depends_on :postgresql => :optional
 
   def install
     # build java wrapper?
@@ -67,6 +69,14 @@ class Rdkit < Formula
     system "make install"
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
     rm_f Dir["#{lib}/*.cmake"]
+    if build.with? 'postgresql'
+      ENV['RDBASE'] = "#{prefix}"
+      ENV.append 'CFLAGS', "-I#{include}/rdkit"
+      cd 'Code/PgSQL/rdkit' do
+        system "make"
+        system "make install"
+      end
+    end
   end
 
   def caveats
