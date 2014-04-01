@@ -1,53 +1,45 @@
 require 'formula'
 
-def with_java
-  return ARGV.include?('--with-java')
-end
-
-def with_inchi
-  return ARGV.include?('--with-inchi')
-end
-
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.zip'
-  version '2013.09.2'
-  head 'https://github.com/rdkit/rdkit.git'
-  sha1 '73a843cb0db3eca7774d273f691b7e28d50656d0'
+  url 'https://github.com/rdkit/rdkit/archive/Release_2013_09_2.tar.gz'
+  sha1 '2c55843403ceba98db0069c6807b4a93fa225262'
+
+  head do
+    url 'https://github.com/rdkit/rdkit.git'
+  end
+
+  option 'with-java', 'Build Java wrapper'
+  option 'with-inchi', 'Build with InChI support'
+  option 'with-postgresql', 'Build with PostgreSQL database cartridge'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
-  depends_on 'swig'
+  depends_on 'swig' => :build
   depends_on 'boost'
   depends_on 'numpy' => :python
-
-  def options
-    [
-      ['--with-java', "Build Java wrapper"],
-      ['--with-inchi', "Build InChI support"]
-    ]
-  end
+  depends_on :postgresql => :optional
 
   def install
     # build java wrapper?
-    if with_java
+    if build.with? 'java'
       if not File.exists? 'External/java_lib/junit.jar'
         system "mkdir External/java_lib"
         system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
       end
     end
     # build inchi support?
-    if with_inchi
+    if build.with? 'inchi'
       system "cd External/INCHI-API; bash download-inchi.sh"
     end
 
     args = std_cmake_parameters.split
     args << '-DRDK_INSTALL_INTREE=OFF'
-    args << '-DRDK_INSTALL_STATIC_LIBS=OFF'
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
 
-    args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if with_java
-    args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if with_inchi
+    args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
+    args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if build.with? 'java'
+    args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if build.with? 'inchi'
 
     # The CMake `FindPythonLibs` Module does not do a good job of finding the
     # correct Python libraries to link to, so we help it out (until CMake is
@@ -77,6 +69,14 @@ class Rdkit < Formula
     system "make install"
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
     rm_f Dir["#{lib}/*.cmake"]
+    if build.with? 'postgresql'
+      ENV['RDBASE'] = "#{prefix}"
+      ENV.append 'CFLAGS', "-I#{include}/rdkit"
+      cd 'Code/PgSQL/rdkit' do
+        system "make"
+        system "make install"
+      end
+    end
   end
 
   def caveats
