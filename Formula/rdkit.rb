@@ -33,7 +33,7 @@ class Rdkit < Formula
     if build.with? 'java'
       if not File.exists? 'External/java_lib/junit.jar'
         system "mkdir External/java_lib"
-        system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
+        system "curl http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar -o External/java_lib/junit.jar"
       end
       args << '-DRDK_BUILD_SWIG_WRAPPERS=ON'
     end
