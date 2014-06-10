@@ -17,6 +17,7 @@ class Rdkit < Formula
   option 'with-java', 'Build Java wrapper'
   option 'with-inchi', 'Build with InChI support'
   option 'with-postgresql', 'Build with PostgreSQL database cartridge'
+  option 'with-avalon', 'Build with Avalon support'
 
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
@@ -26,25 +27,31 @@ class Rdkit < Formula
   depends_on :postgresql => :optional
 
   def install
+    args = std_cmake_parameters.split
+    args << '-DRDK_INSTALL_INTREE=OFF'
     # build java wrapper?
     if build.with? 'java'
       if not File.exists? 'External/java_lib/junit.jar'
         system "mkdir External/java_lib"
-        system "curl http://cloud.github.com/downloads/KentBeck/junit/junit-4.10.jar -o External/java_lib/junit.jar"
+        system "curl http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar -o External/java_lib/junit.jar"
       end
+      args << '-DRDK_BUILD_SWIG_WRAPPERS=ON'
     end
     # build inchi support?
     if build.with? 'inchi'
       system "cd External/INCHI-API; bash download-inchi.sh"
+      args << '-DRDK_BUILD_INCHI_SUPPORT=ON'
+    end
+    # build avalon tools?
+    if build.with? 'avalon'
+      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvalonToolkit_1.1_beta/AvalonToolkit_1.1_beta.source.tar -o External/AvalonTools/avalon.tar"
+      system "tar xf External/AvalonTools/avalon.tar -C External/AvalonTools"
+      args << '-DRDK_BUILD_AVALON_SUPPORT=ON'
+      args << "-DAVALONTOOLS_DIR=#{buildpath}/External/AvalonTools/SourceDistribution"
     end
 
-    args = std_cmake_parameters.split
-    args << '-DRDK_INSTALL_INTREE=OFF'
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
-
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
-    args << '-DRDK_BUILD_SWIG_WRAPPERS=ON' if build.with? 'java'
-    args << '-DRDK_BUILD_INCHI_SUPPORT=ON' if build.with? 'inchi'
 
     # The CMake `FindPythonLibs` Module does not do a good job of finding the
     # correct Python libraries to link to, so we help it out (until CMake is
@@ -69,7 +76,6 @@ class Rdkit < Formula
 
     args << '.'
     system "cmake", *args
-    ENV.j1
     system "make"
     system "make install"
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
