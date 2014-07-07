@@ -35,6 +35,13 @@ class Rdkit < Formula
         system "mkdir External/java_lib"
         system "curl http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar -o External/java_lib/junit.jar"
       end
+      java_home = ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
+      if File.exist? "#{java_home}/include/jni.h"
+        args << "-DJAVA_AWT_INCLUDE_DIRECTORIES=#{java_home}/include"
+      elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
+        args << "-DJAVA_AWT_INCLUDE_DIRECTORIES=/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
+        args << "-DJAVA_AWT_LIBRARY_DIRECTORIES=#{java_home}/bundle/Libraries/"
+      end
       args << '-DRDK_BUILD_SWIG_WRAPPERS=ON'
     end
     # build inchi support?
