@@ -60,26 +60,24 @@ class Rdkit < Formula
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
 
-    # The CMake `FindPythonLibs` Module does not do a good job of finding the
-    # correct Python libraries to link to, so we help it out (until CMake is
-    # fixed). This code was cribbed from the opencv formula, which took it from
-    # the VTK formula. It uses the output from `python-config`.
-    which_python = "python" + `python -c 'import sys;print(sys.version[:3])'`.strip
-    python_prefix = `python-config --prefix`.strip
-    # Python is actually a library. The libpythonX.Y.dylib points to this lib, too.
+    # Get Python location
+    python_executable = "#{HOMEBREW_PREFIX}/bin/python"
+    python_prefix = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_config_var("prefix"))').chomp
+    python_include = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_path("include"))').chomp
+    python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
+    args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
+    args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
     if File.exist? "#{python_prefix}/Python"
-      # Python was compiled with --framework:
       args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/Headers'"
+    elsif File.exists? "#{python_prefix}/lib/lib#{python_version}.a"
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.a'"
     else
-      python_lib = "#{python_prefix}/lib/lib#{which_python}"
-      if File.exists? "#{python_lib}.a"
-        args << "-DPYTHON_LIBRARY='#{python_lib}.a'"
-      else
-        args << "-DPYTHON_LIBRARY='#{python_lib}.dylib'"
-      end
-      args << "-DPYTHON_INCLUDE_DIR='#{python_prefix}/include/#{which_python}'"
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.dylib'"
     end
+
+    # Get numpy location
+    numpy_include = %x(#{python_executable} -c 'import numpy;print(numpy.get_include())').chomp
+    args << "-DPYTHON_NUMPY_INCLUDE_PATH='#{numpy_include}'"
 
     args << '.'
     system "cmake", *args
