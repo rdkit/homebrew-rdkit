@@ -61,7 +61,7 @@ class Rdkit < Formula
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
 
     # Get Python location
-    python_executable = "#{HOMEBREW_PREFIX}/bin/python"
+    python_executable = `which python`.strip
     python_prefix = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_config_var("prefix"))').chomp
     python_include = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_path("include"))').chomp
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
