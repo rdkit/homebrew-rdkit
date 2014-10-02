@@ -22,7 +22,8 @@ class Rdkit < Formula
   depends_on 'cmake' => :build
   depends_on 'wget' => :build
   depends_on 'swig' => :build
-  depends_on 'boost' => 'with-python'
+  depends_on 'boost'
+  depends_on 'boost-python'
   depends_on 'numpy' => :python
   depends_on :postgresql => :optional
 
@@ -62,8 +63,8 @@ class Rdkit < Formula
 
     # Get Python location
     python_executable = `which python`.strip
-    python_prefix = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_config_var("prefix"))').chomp
-    python_include = %x(#{python_executable} -c 'import sysconfig;print(sysconfig.get_path("include"))').chomp
+    python_prefix = %x(#{python_executable} -c 'import sys;print(sys.prefix)').chomp
+    python_include = %x(#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))').chomp
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
     args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
     args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
