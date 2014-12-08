@@ -66,7 +66,7 @@ class Rdkit < Formula
 
     # build avalon tools?
     if build.with? 'avalon'
-      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvonToolkit_1.2/AvalonToolkit_1.2.0.source.tar -o External/AvalonTools/avalon.tar"
+      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvalonToolkit_1.2/AvalonToolkit_1.2.0.source.tar -o External/AvalonTools/avalon.tar"
       system "tar xf External/AvalonTools/avalon.tar -C External/AvalonTools"
       args << '-DRDK_BUILD_AVALON_SUPPORT=ON'
       args << "-DAVALONTOOLS_DIR=#{buildpath}/External/AvalonTools/SourceDistribution"
