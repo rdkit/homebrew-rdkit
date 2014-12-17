@@ -3,7 +3,7 @@ require 'formula'
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
   url 'https://github.com/rdkit/rdkit/archive/Release_2014_09_2.tar.gz'
-  sha1 '776da8545fca4376a24670bc14cae9aee568745a'
+  sha1 'b9c34dea8a53737d76fb670998f9610889c317e3'
 
   # devel do
   #   url 'https://github.com/rdkit/rdkit/archive/Release_2014_03_1beta1.tar.gz'
