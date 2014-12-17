@@ -2,8 +2,8 @@ require 'formula'
 
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'https://github.com/rdkit/rdkit/archive/Release_2014_09_1.tar.gz'
-  sha1 'cb3fb16bb4dac002636fb6a37b6aa690931c3941'
+  url 'https://github.com/rdkit/rdkit/archive/Release_2014_09_2.tar.gz'
+  sha1 '776da8545fca4376a24670bc14cae9aee568745a'
 
   # devel do
   #   url 'https://github.com/rdkit/rdkit/archive/Release_2014_03_1beta1.tar.gz'
@@ -66,7 +66,7 @@ class Rdkit < Formula
 
     # build avalon tools?
     if build.with? 'avalon'
-      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvonToolkit_1.2/AvalonToolkit_1.2.0.source.tar -o External/AvalonTools/avalon.tar"
+      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvalonToolkit_1.2/AvalonToolkit_1.2.0.source.tar -o External/AvalonTools/avalon.tar"
       system "tar xf External/AvalonTools/avalon.tar -C External/AvalonTools"
       args << '-DRDK_BUILD_AVALON_SUPPORT=ON'
       args << "-DAVALONTOOLS_DIR=#{buildpath}/External/AvalonTools/SourceDistribution"
