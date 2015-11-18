@@ -2,8 +2,8 @@ require 'formula'
 
 class Rdkit < Formula
   homepage 'http://rdkit.org/'
-  url 'https://github.com/rdkit/rdkit/archive/Release_2015_09_1.tar.gz'
-  sha1 '39e10a74547649af68ecc2b0377e21ea8b81c5ee'
+  url 'https://github.com/rdkit/rdkit/archive/Release_2015_09_2.tar.gz'
+  sha1 'f81b8519051b1d3f6e7379e49e5f826f580710fb'
 
   # devel do
   #   url 'https://github.com/rdkit/rdkit/archive/Release_2014_03_1beta1.tar.gz'
