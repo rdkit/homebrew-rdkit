@@ -53,6 +53,7 @@ class Rdkit < Formula
 
     args << "-DRDK_INSTALL_INTREE=OFF"
     args << "-DRDK_BUILD_AVALON_SUPPORT=ON" if build.with? "avalon"
+    args << "-DRDK_BUILD_PGSQL=ON" if build.with? "postgresql"
     args << "-DRDK_BUILD_INCHI_SUPPORT=ON" if build.with? "inchi"
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
@@ -80,15 +81,16 @@ class Rdkit < Formula
     system "cmake", *args
     system "make"
     system "make install"
+
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
     rm_f Dir["#{lib}/*.cmake"]
-    if build.with? 'postgresql'
-      ENV['RDBASE'] = "#{prefix}"
-      ENV.append 'CFLAGS', "-I#{include}/rdkit"
-      cd 'Code/PgSQL/rdkit' do
-        system "make"
-        system "make install"
-      end
+
+    # Install postgresql files
+    if build.with? "postgresql"
+      mv "Code/PgSQL/rdkit/rdkit.sql91.in", "Code/PgSQL/rdkit/rdkit--3.4.sql"
+      (share + 'postgresql/extension').install "Code/PgSQL/rdkit/rdkit--3.4.sql"
+      (share + 'postgresql/extension').install "Code/PgSQL/rdkit/rdkit.control"
+      (lib + 'postgresql').install "Code/PgSQL/rdkit/rdkit.so"
     end
   end
 
