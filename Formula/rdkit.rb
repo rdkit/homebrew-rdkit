@@ -16,7 +16,6 @@ class Rdkit < Formula
   option "with-pycairo", "Build with py2cairo/py3cairo support"
 
   depends_on 'cmake' => :build
-  depends_on 'wget' => :build
   depends_on 'swig' => :build if build.with? 'java'
   depends_on 'boost'
   depends_on :python3 => :optional
@@ -35,7 +34,6 @@ class Rdkit < Formula
 
   def install
     args = std_cmake_parameters.split
-    args << '-DRDK_INSTALL_INTREE=OFF'
 
     # build java wrapper?
     if build.with? 'java'
@@ -53,20 +51,9 @@ class Rdkit < Formula
       args << '-DRDK_BUILD_SWIG_WRAPPERS=ON'
     end
 
-    # build inchi support?
-    if build.with? 'inchi'
-      system "cd External/INCHI-API; bash download-inchi.sh"
-      args << '-DRDK_BUILD_INCHI_SUPPORT=ON'
-    end
-
-    # build avalon tools?
-    if build.with? 'avalon'
-      system "curl -L https://downloads.sourceforge.net/project/avalontoolkit/AvalonToolkit_1.2/AvalonToolkit_1.2.0.source.tar -o External/AvalonTools/avalon.tar"
-      system "tar xf External/AvalonTools/avalon.tar -C External/AvalonTools"
-      args << '-DRDK_BUILD_AVALON_SUPPORT=ON'
-      args << "-DAVALONTOOLS_DIR=#{buildpath}/External/AvalonTools/SourceDistribution"
-    end
-
+    args << "-DRDK_INSTALL_INTREE=OFF"
+    args << "-DRDK_BUILD_AVALON_SUPPORT=ON" if build.with? "avalon"
+    args << "-DRDK_BUILD_INCHI_SUPPORT=ON" if build.with? "inchi"
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
 
