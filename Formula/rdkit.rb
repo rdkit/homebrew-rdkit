@@ -34,24 +34,8 @@ class Rdkit < Formula
 
   def install
     args = std_cmake_parameters.split
-
-    # build java wrapper?
-    if build.with? 'java'
-      if not File.exists? 'External/java_lib/junit.jar'
-        system "mkdir External/java_lib"
-        system "curl http://search.maven.org/remotecontent?filepath=junit/junit/4.11/junit-4.11.jar -o External/java_lib/junit.jar"
-      end
-      java_home = ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
-      if File.exist? "#{java_home}/include/jni.h"
-        args << "-DJAVA_AWT_INCLUDE_DIRECTORIES=#{java_home}/include"
-      elsif File.exist? "/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/jni.h"
-        args << "-DJAVA_AWT_INCLUDE_DIRECTORIES=/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers/"
-        args << "-DJAVA_AWT_LIBRARY_DIRECTORIES=#{java_home}/bundle/Libraries/"
-      end
-      args << '-DRDK_BUILD_SWIG_WRAPPERS=ON'
-    end
-
     args << "-DRDK_INSTALL_INTREE=OFF"
+    args << "-DRDK_BUILD_SWIG_WRAPPERS=ON" if build.with? "java"
     args << "-DRDK_BUILD_AVALON_SUPPORT=ON" if build.with? "avalon"
     args << "-DRDK_BUILD_PGSQL=ON" if build.with? "postgresql"
     args << "-DRDK_BUILD_INCHI_SUPPORT=ON" if build.with? "inchi"
@@ -85,6 +69,13 @@ class Rdkit < Formula
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
     rm_f Dir["#{lib}/*.cmake"]
 
+    # Install java files
+    if build.with? "java"
+      libexec.install "Code/JavaWrappers/gmwrapper/org.RDKit.jar"
+      libexec.install "Code/JavaWrappers/gmwrapper/org.RDKitDoc.jar"
+      lib.install "Code/JavaWrappers/gmwrapper/libGraphMolWrap.jnilib"
+    end
+
     # Install postgresql files
     if build.with? "postgresql"
       mv "Code/PgSQL/rdkit/rdkit.sql91.in", "Code/PgSQL/rdkit/rdkit--3.4.sql"
@@ -95,12 +86,21 @@ class Rdkit < Formula
   end
 
   def caveats
-    return <<-EOS.undent
-    You may need to add RDBASE to your environment variables.
-    For Bash, put something like this in your $HOME/.bashrc
-
-      export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
-
+    s = <<-EOS.undent
+      You may need to add RDBASE to your environment variables.
+      For Bash, put something like this in your $HOME/.bashrc:
+        export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
     EOS
+    if build.with? "java"
+      s += <<-EOS.undent
+
+        The RDKit Jar file has been installed to:
+          #{libexec}/org.RDKit.jar
+        You may need to link the Java bindings into the Java Extensions folder:
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{lib}/libGraphMolWrap.jnilib /Library/Java/Extensions/libGraphMolWrap.jnilib
+      EOS
+    end
+    s
   end
 end
