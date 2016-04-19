@@ -10,7 +10,7 @@ You can install [rdkit](http://rdkit.org) with just one line of command:
 
     brew install rdkit
 
-If you want to stay on the edge and use the latest and greatest from <del>SVN</del> GitHub:
+If you want to stay on the edge and use the latest and greatest from GitHub:
 
     brew install --HEAD rdkit
 
@@ -18,7 +18,8 @@ If you want to stay on the edge and use the latest and greatest from <del>SVN</d
 ### Optional installs
 
 - `--with-java` will install the Java wrapper.
-- `--with-inchi` will install the InChI support. It will NOT use system InChI even it is present. Instead, it will always download InChI from http://inchitrust.org.
+- `--with-inchi` will install the InChI support. This will download InChI from http://inchitrust.org if necessary.
+- `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source. 
 
 ### Errors you might encounter
 
@@ -41,3 +42,12 @@ If that doesn't fix it, try comparing the output of these three commands:
     python-config --prefix
     find /usr/local/Cellar/rdkit -name rdBase.so -exec otool -L {} \;
     find /usr/local/Cellar/boost -name libboost_python-mt.dylib -exec otool -L {} \;
+
+- *TypeError: No to_python (by-value) converter found for C++ type: boost::shared_ptr<RDKit::ROMol>*
+
+This is likely due to a bug in boost-python v1.60. At the time of this writing, you need to install an older version of boost:
+
+    brew uninstall boost boost-python
+    brew install homebrew/versions/boost159 homebrew/versions/boost-python159
+    
+and then uninstall and reinstall the rdkit.
