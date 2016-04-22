@@ -20,17 +20,18 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 - `--with-java` will install the Java wrapper.
 - `--with-inchi` will install the InChI support. This will download InChI from http://inchitrust.org if necessary.
 - `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source. 
+- `--with-postgresql` will install the PostgreSQL cartridge.
 
 ### Errors you might encounter
 
 - *Unsatisfied dependency: numpy*
 
 Homebrew does not manage Python package dependencies for you. You need to
-install `numpy` with `sudo easy_install numpy`.
+install `numpy` with `pip install numpy` or `sudo easy_install numpy`.
 
 - *Fatal Python error: Interpreter not initialized (version mismatch?)*
 
-This indicates that rdkit or one of its dependencies (eg. boost) was linked
+This indicates that rdkit or one of its dependencies (e.g. boost) was linked
 against a different version of Python than the one you are using it with.
 Try rebuilding boost from source:
 
@@ -45,9 +46,8 @@ If that doesn't fix it, try comparing the output of these three commands:
 
 - *TypeError: No to_python (by-value) converter found for C++ type: boost::shared_ptr<RDKit::ROMol>*
 
-This is likely due to a bug in boost-python v1.60. At the time of this writing, you need to install an older version of boost:
+This is likely due to a bug in boost-python v1.60, which has now been patched in the boost homebrew formula. To get the patch, run:
 
-    brew uninstall boost boost-python
-    brew install homebrew/versions/boost159 homebrew/versions/boost-python159
-    
-and then uninstall and reinstall the rdkit.
+    brew reinstall boost
+    brew reinstall rdkit
+
