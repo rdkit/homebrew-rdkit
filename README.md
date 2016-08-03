@@ -17,6 +17,7 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 
 ### Optional installs
 
+- `--with-python3` will install RDkit under the Python3 (By default, the RDkit is installed under Python2)
 - `--with-java` will install the Java wrapper.
 - `--with-inchi` will install the InChI support. This will download InChI from http://inchitrust.org if necessary.
 - `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source. 
