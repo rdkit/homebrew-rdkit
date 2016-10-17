@@ -33,7 +33,7 @@ class Rdkit < Formula
   end
 
   def install
-    args = std_cmake_parameters.split
+    args = std_cmake_args
     args << "-DRDK_INSTALL_INTREE=OFF"
     args << "-DRDK_BUILD_SWIG_WRAPPERS=ON" if build.with? "java"
     args << "-DRDK_BUILD_AVALON_SUPPORT=ON" if build.with? "avalon"
