@@ -18,6 +18,7 @@ class Rdkit < Formula
   depends_on 'cmake' => :build
   depends_on 'swig' => :build if build.with? 'java'
   depends_on 'boost'
+  depends_on "eigen" => :recommended
   depends_on :python3 => :optional
   depends_on :postgresql => :optional
 
