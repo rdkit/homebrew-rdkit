@@ -27,8 +27,17 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 
 - *Unsatisfied dependency: numpy*
 
-Homebrew does not manage Python package dependencies for you. You need to
-install `numpy` with `pip install numpy` or `sudo easy_install numpy`.
+By default, Homebrew will attempt to install and manage numpy for you, like all other dependencies. You may alternatively install and manage numpy separately, via `pip`. However, when installing rdkit with python 3, a pip-installed numpy for python 2 can prevent homebrew properly installing numpy for python 3. To solve this, make sure you use `pip` in both python 2 and 3:
+
+    pip install numpy
+    pip3 install numpy
+    brew install rdkit --with-python3 --without-numpy
+
+Or use homebrew in both python 2 and 3:
+
+    pip uninstall numpy
+    pip3 uninstall numpy
+    brew install rdkit --with-python3
 
 - *Fatal Python error: Interpreter not initialized (version mismatch?)*
 
