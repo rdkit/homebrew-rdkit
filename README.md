@@ -1,3 +1,5 @@
+[![Build status](https://travis-ci.org/rdkit/homebrew-rdkit.svg)](https://travis-ci.org/rdkit/homebrew-rdkit)
+
 # Homebrew-rdkit: tap-ready formula for rdkit
 
 First, make sure you Homebrew version is 0.9 or above (you can check your brew version with `brew --version`).
