@@ -7,7 +7,6 @@ sudo: false
 before_install:
  - brew update
  - brew install python3
- - pip install numpy
  - pip3 install numpy
 
 install:
