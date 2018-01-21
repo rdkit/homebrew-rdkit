@@ -66,7 +66,7 @@ class Rdkit < Formula
 
     args << '.'
     system "cmake", *args
-    system "make"
+    system "make", "-j#{ENV.make_jobs}"
     system "make install"
 
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
