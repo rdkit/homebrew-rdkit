@@ -22,6 +22,7 @@ class Rdkit < Formula
   depends_on "eigen" => :recommended
   depends_on "python3" => :optional
   depends_on "postgresql" => :optional
+  depends_on "numpy" => :recommended
 
   # Different dependencies if building for python3
   if build.with? "python3"
@@ -29,9 +30,8 @@ class Rdkit < Formula
     depends_on "numpy" => [:recommended, "with-python3"]
     depends_on "py3cairo" if build.with? "pycairo"
   else
-    depends_on "python"
+    depends_on "python@2" => :recommended if MacOS.version <= :snow_leopard
     depends_on "boost-python"
-    depends_on "numpy" => :recommended
     depends_on "py2cairo" if build.with? "pycairo"
   end
 
