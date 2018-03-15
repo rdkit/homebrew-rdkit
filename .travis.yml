@@ -6,8 +6,8 @@ sudo: false
 
 before_install:
  - brew update
- - brew install python3
- - pip2 install numpy
+ - brew upgrade python
+ # Don't need `pip2 install numpy` because numpy has already been install: see https://docs.travis-ci.com/user/reference/osx/#Python-related-tools
  - pip3 install numpy
 
 matrix:
