@@ -6,13 +6,17 @@ sudo: false
 
 before_install:
  - brew update
- - brew install python3
- - pip2 install numpy
+ - brew upgrade python
+ # Don't need `pip2 install numpy` because numpy has already been install: see https://docs.travis-ci.com/user/reference/osx/#Python-related-tools
  - pip3 install numpy
 
 matrix:
   include:
-    - install: travis_wait 50 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3 --without-numpy
-      env: version=HEAD
-    - install: travis_wait 50 brew install ./Formula/rdkit.rb --build-from-source --with-python3 --without-numpy
-      env: version=current
+    - env: version=HEAD_python3
+      install: travis_wait 50 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3 --without-numpy
+    - env: version=current_python3
+      install: travis_wait 50 brew install ./Formula/rdkit.rb --build-from-source --with-python3 --without-numpy
+    - env: version=HEAD_python2
+      install: travis_wait 50 brew install ./Formula/rdkit.rb --HEAD --build-from-source --without-numpy
+    - env: version=current_python2
+      install: travis_wait 50 brew install ./Formula/rdkit.rb --build-from-source --without-numpy
