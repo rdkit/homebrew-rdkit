@@ -2,7 +2,7 @@ require 'formula'
 
 class Rdkit < Formula
   homepage "http://rdkit.org/"
-  url "https://github.com/rdkit/rdkit.git"
+  url "https://github.com/rdkit/rdkit/archive/Release_2017_09_3.tar.gz"
   sha256 "6a4d9e9eb0ca06cbcdc20505f0c6ea0b1167b4dcdf7d1185871ba16ce701a5f4"
 
   head do
@@ -38,6 +38,7 @@ class Rdkit < Formula
   def install
     ENV['CXXFLAGS'] = '-std=c++11 -stdlib=libc++ -Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
     ENV['CFLAGS'] = '-Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
+
     args = std_cmake_args
     args << "-DRDK_INSTALL_INTREE=OFF"
     args << "-DRDK_BUILD_SWIG_WRAPPERS=ON" if build.with? "java"
@@ -54,6 +55,13 @@ class Rdkit < Formula
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
     args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
     args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
+    if File.exist? "#{python_prefix}/Python"
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
+    elsif File.exists? "#{python_prefix}/lib/lib#{python_version}.a"
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.a'"
+    else
+      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.dylib'"
+    end
 
     # Get numpy location
     numpy_include = %x(#{python_executable} -c 'import numpy;print(numpy.get_include())').chomp
@@ -84,13 +92,13 @@ class Rdkit < Formula
   end
 
   def caveats
-    s = <<-EOS
+    s = <<-EOS.undent
       You may need to add RDBASE to your environment variables.
       For Bash, put something like this in your $HOME/.bashrc:
         export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
     EOS
     if build.with? "java"
-      s += <<-EOS
+      s += <<-EOS.undent
 
         The RDKit Jar file has been installed to:
           #{libexec}/org.RDKit.jar
