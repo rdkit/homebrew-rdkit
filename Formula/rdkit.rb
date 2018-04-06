@@ -55,14 +55,7 @@ class Rdkit < Formula
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
     args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
     args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
-    if File.exist? "#{python_prefix}/Python"
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-    elsif File.exists? "#{python_prefix}/lib/lib#{python_version}.a"
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.a'"
-    else
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.dylib'"
-    end
-
+    
     # Get numpy location
     numpy_include = %x(#{python_executable} -c 'import numpy;print(numpy.get_include())').chomp
     args << "-DPYTHON_NUMPY_INCLUDE_PATH='#{numpy_include}'"
