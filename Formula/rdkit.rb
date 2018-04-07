@@ -85,13 +85,13 @@ class Rdkit < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
+    s = <<-EOS
       You may need to add RDBASE to your environment variables.
       For Bash, put something like this in your $HOME/.bashrc:
         export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
     EOS
     if build.with? "java"
-      s += <<-EOS.undent
+      s += <<-EOS
 
         The RDKit Jar file has been installed to:
           #{libexec}/org.RDKit.jar
