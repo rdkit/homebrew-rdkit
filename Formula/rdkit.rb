@@ -25,7 +25,7 @@ class Rdkit < Formula
 
   # Different dependencies if building for python3
   if build.with? "python3"
-    depends_on "boost-python" => "with-python3"
+    depends_on "boost-python3"
     depends_on "numpy" => [:recommended, "with-python3"]
     depends_on "py3cairo" if build.with? "pycairo"
   else
