@@ -25,7 +25,7 @@ class Rdkit < Formula
 
   # Different dependencies if building for python3
   if build.with? "python3"
-    depends_on "boost-python" => "with-python3"
+    depends_on "boost-python3"
     depends_on "numpy" => [:recommended, "with-python3"]
     depends_on "py3cairo" if build.with? "pycairo"
   else
@@ -36,6 +36,9 @@ class Rdkit < Formula
   end
 
   def install
+    ENV['CXXFLAGS'] = '-std=c++11 -stdlib=libc++ -Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
+    ENV['CFLAGS'] = '-Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
+
     args = std_cmake_args
     args << "-DRDK_INSTALL_INTREE=OFF"
     args << "-DRDK_BUILD_SWIG_WRAPPERS=ON" if build.with? "java"
@@ -52,14 +55,7 @@ class Rdkit < Formula
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
     args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
     args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
-    if File.exist? "#{python_prefix}/Python"
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/Python'"
-    elsif File.exists? "#{python_prefix}/lib/lib#{python_version}.a"
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.a'"
-    else
-      args << "-DPYTHON_LIBRARY='#{python_prefix}/lib/lib#{python_version}.dylib'"
-    end
-
+    
     # Get numpy location
     numpy_include = %x(#{python_executable} -c 'import numpy;print(numpy.get_include())').chomp
     args << "-DPYTHON_NUMPY_INCLUDE_PATH='#{numpy_include}'"
@@ -89,13 +85,13 @@ class Rdkit < Formula
   end
 
   def caveats
-    s = <<-EOS.undent
+    s = <<-EOS
       You may need to add RDBASE to your environment variables.
       For Bash, put something like this in your $HOME/.bashrc:
         export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
     EOS
     if build.with? "java"
-      s += <<-EOS.undent
+      s += <<-EOS
 
         The RDKit Jar file has been installed to:
           #{libexec}/org.RDKit.jar
