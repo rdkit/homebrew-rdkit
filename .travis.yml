@@ -6,7 +6,7 @@ sudo: false
 
 before_install:
  - brew update
- - brew install python3
+ - which python3 || brew install python3
  - pip3 install numpy
 
 matrix:
