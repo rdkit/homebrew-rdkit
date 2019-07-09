@@ -23,18 +23,11 @@ class Rdkit < Formula
   depends_on "python3" => :optional
   depends_on "postgresql" => :optional
 
-  # Different dependencies if building for python3
-  if build.with? "python3"
-    depends_on "boost-python3"
-    depends_on "numpy" => [:recommended, "with-python3"]
-    depends_on "py3cairo" if build.with? "pycairo"
-  else
-    depends_on "python"
-    depends_on "boost-python"
-    depends_on "numpy" => :recommended
-    depends_on "py2cairo" if build.with? "pycairo"
-  end
-
+  # only building for python3
+  depends_on "boost-python3"
+  depends_on "numpy" => [:recommended, "with-python3"]
+  depends_on "py3cairo" if build.with? "pycairo"
+  
   def install
     ENV['CXXFLAGS'] = '-std=c++11 -stdlib=libc++ -Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
     ENV['CFLAGS'] = '-Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
@@ -49,7 +42,7 @@ class Rdkit < Formula
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
 
     # Get Python location
-    python_executable = if build.with? "python3" then `which python3`.strip else `which python`.strip end
+    python_executable = `which python3`.strip
     python_prefix = %x(#{python_executable} -c 'import sys;print(sys.prefix)').chomp
     python_include = %x(#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))').chomp
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
