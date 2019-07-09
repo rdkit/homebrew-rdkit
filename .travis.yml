@@ -6,7 +6,6 @@ sudo: false
 
 before_install:
  - brew update
- - brew upgrade python
  - brew install python3
  - pip3 install numpy
 
@@ -18,4 +17,3 @@ matrix:
     - install: travis_wait 50 brew install ./Formula/rdkit.rb --build-from-source --with-python3 --without-numpy
       env:
         - version=current HOMEBREW_DEVELOPER=1
-      
