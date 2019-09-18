@@ -18,13 +18,13 @@ class Rdkit < Formula
 
   depends_on "cmake" => :build
   depends_on "swig" => :build if build.with? 'java'
-  # depends_on "boost@1.70"
+  depends_on "boost@1.70"
   depends_on "eigen" => :recommended
   depends_on "python3" => :optional
   depends_on "postgresql" => :optional
 
   # Different dependencies if building for python3
-  # depends_on "boost-python3@1.70"
+  depends_on "boost-python3@1.70"
   depends_on "numpy" => [:recommended, "with-python3"]
   depends_on "py3cairo" if build.with? "pycairo"
 
