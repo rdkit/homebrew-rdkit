@@ -13,8 +13,8 @@ class BoostPython3AT170 < Formula
     sha256 "d1ff523535c6e1fafe64007fbe835c1432ac86ab1e5779b12288f9c4d57506b3" => :sierra
   end
 
-  depends_on "boost"
-  depends_on "python"
+  depends_on "boost@1.70"
+  depends_on "python3"
 
   resource "numpy" do
     url "https://files.pythonhosted.org/packages/2d/80/1809de155bad674b494248bcfca0e49eb4c5d8bee58f26fe7a0dd45029e2/numpy-1.15.4.zip"
