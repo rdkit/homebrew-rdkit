@@ -13,9 +13,9 @@ before_install:
 
 matrix:
   include:
-    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --HEAD --build-from-source --with-python3 --without-numpy
+    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --HEAD --build-from-source --with-python3
       env:
         - version=HEAD HOMEBREW_DEVELOPER=1
-    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --build-from-source --with-python3 --without-numpy
+    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --build-from-source --with-python3
       env:
         - version=current HOMEBREW_DEVELOPER=1
