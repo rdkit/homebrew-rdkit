@@ -8,7 +8,8 @@ before_install:
  - brew update
  - which python3 || brew install python3
  - pip3 install numpy
- - brew unlink boost boost-python3
+ - brew unlink boost || echo 'brew: boost not installed'
+ - brew unlink boost-python3 || echo 'brew: boost-python3 not installed'
 
 matrix:
   include:
