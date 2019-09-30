@@ -8,13 +8,14 @@ before_install:
  - brew update
  - which python3 || brew install python3
  - pip3 install numpy
+ - brew unlink boost || echo boost_not_installed
+ - brew unlink boost-python3 || echo boost-python3_not_installed
 
 matrix:
   include:
-    - install: travis_wait 50 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3 --without-numpy
+    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --HEAD --build-from-source --with-python3
       env:
         - version=HEAD HOMEBREW_DEVELOPER=1
-    - install: travis_wait 50 brew install ./Formula/rdkit.rb --build-from-source --with-python3 --without-numpy
+    - install: travis_wait 180 brew install ./Formula/boost\@1.70.rb ./Formula/boost-python3\@1.70.rb ./Formula/rdkit.rb --build-from-source --with-python3
       env:
         - version=current HOMEBREW_DEVELOPER=1
-      
