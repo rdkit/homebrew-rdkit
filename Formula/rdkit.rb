@@ -6,7 +6,7 @@ class Rdkit < Formula
   sha256 "230f04bdec6ddeb29d83a212bd0f2a8d2340385fcabf5fc8f3d2c1b20e4cd83c"
 
   head do
-    url 'https://github.com/rdkit/rdkit.git'
+    url 'https://github.com/maksbotan/rdkit/archive/pip-install.zip'
   end
 
   option 'with-java', 'Build Java wrapper'
@@ -41,6 +41,7 @@ class Rdkit < Formula
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
     args << '-DBoost_NO_BOOST_CMAKE=ON'
+    args << '-DRDK_INSTALL_PYTHON_PACKAGE=OFF'
 
     # Get Python location
     python_executable = `which python3`.strip
@@ -62,6 +63,12 @@ class Rdkit < Formula
     # Remove the ghost .cmake files which will cause a warning if we install them to 'lib'
     rm_f Dir["#{lib}/*.cmake"]
 
+    # Get name of built wheel file
+    wheel = Dir["dist/*.whl"][0]
+
+    # Install Python package
+    system "#{python_executable} -m pip install --prefix #{prefix} #{wheel}"
+
     # Install java files
     if build.with? "java"
       libexec.install "Code/JavaWrappers/gmwrapper/org.RDKit.jar"
@@ -76,6 +83,8 @@ class Rdkit < Formula
       (share + 'postgresql/extension').install "Code/PgSQL/rdkit/rdkit.control"
       (lib + 'postgresql').install "Code/PgSQL/rdkit/rdkit.so"
     end
+
+    (share + "RDKit").install wheel
   end
 
   def caveats
@@ -83,6 +92,11 @@ class Rdkit < Formula
       You may need to add RDBASE to your environment variables.
       For Bash, put something like this in your $HOME/.bashrc:
         export RDBASE=#{HOMEBREW_PREFIX}/share/RDKit
+
+      For your convenience RDKit Python wheel package was also copied to:
+        #{HOMEBREW_PREFIX}/share/RDKit/#{wheel}
+      You can install this wheel to any virtual env and it will connect to globally
+      installed RDKit in #{HOMEBREW_PREFIX}.
     EOS
     if build.with? "java"
       s += <<-EOS
