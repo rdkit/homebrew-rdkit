@@ -19,6 +19,7 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 
 ### Optional installs
 
+- `--with-python3` will install the Python 3 wrapper.
 - `--with-java` will install the Java wrapper.
 - `--with-inchi` will install the InChI support. This will download InChI from http://inchitrust.org if necessary.
 - `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source. 
@@ -31,7 +32,7 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 By default, Homebrew will attempt to install and manage numpy for you, like all other dependencies. You may alternatively install and manage numpy separately, via `pip`:
 
     pip3 install numpy
-    brew install rdkit --without-numpy
+    brew install rdkit --with-python3 --without-numpy
 
 - *Fatal Python error: Interpreter not initialized (version mismatch?)*
 
