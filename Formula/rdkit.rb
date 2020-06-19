@@ -2,7 +2,7 @@ require 'formula'
 
 class Rdkit < Formula
   homepage "http://rdkit.org/"
-  url "https://github.com/rdkit/rdkit/archive/Release_2019_09_1.tar.gz"
+  url "https://github.com/rdkit/rdkit/archive/Release_2020_03_3.tar.gz"
   sha256 "bfcb3c094cd0e7ec6fbebacde71f29f61df71601eb3d577eb295fd45771513eb"
 
   head do
