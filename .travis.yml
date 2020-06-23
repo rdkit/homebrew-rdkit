@@ -4,10 +4,19 @@ language: generic
 
 sudo: false
 
+# See https://stackoverflow.com/questions/39930171/cache-brew-builds-with-travis-ci
+cache:
+  directories:
+    - $HOME/Library/Caches/Homebrew
+
+before_cache:
+  - brew cleanup
+
 before_install:
  - brew update
- - which python3 || brew install python@3.8
- - pip3 install numpy
+ - brew install python@3.8
+ - which python38
+ - python38 -m pip install numpy
 
 matrix:
   include:
