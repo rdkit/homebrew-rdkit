@@ -20,7 +20,7 @@ class Rdkit < Formula
   depends_on "swig" => :build if build.with? 'java'
   depends_on "boost"
   depends_on "eigen" => :recommended
-  depends_on "python3" => :optional
+  depends_on "python3.8" => :optional
   depends_on "postgresql" => :optional
 
   # Different dependencies if building for python3
@@ -43,7 +43,7 @@ class Rdkit < Formula
     args << '-DBoost_NO_BOOST_CMAKE=ON'
 
     # Get Python location
-    python_executable = `which python3`.strip
+    python_executable = `which python3.8`.strip
     python_prefix = %x(#{python_executable} -c 'import sys;print(sys.prefix)').chomp
     python_include = %x(#{python_executable} -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))').chomp
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
