@@ -15,8 +15,8 @@ before_cache:
 before_install:
  - brew update
  - brew install python@3.8
- - which python38
- - python38 -m pip install numpy
+ - which python3.8
+ - python3.8 -m pip install numpy
 
 matrix:
   include:
