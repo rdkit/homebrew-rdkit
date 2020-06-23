@@ -1,19 +1,46 @@
 os: osx
 dist: trusty
-language: generic
+
 
 sudo: false
 
-before_install:
- - brew update
- - which python3 || brew install python3
- - pip3 install numpy
-
 matrix:
   include:
-    - install: travis_wait 180 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3
+    - name: "HEAD with homebrew python"
+      language: generic
+      before_install:
+       - brew update
+       - which python3 || brew install python3
+       - pip install numpy
+      install: travis_wait 180 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3
       env:
         - version=HEAD HOMEBREW_DEVELOPER=1
-    - install: travis_wait 180 brew install ./Formula/rdkit.rb --build-from-source --with-python3
+    - name: "Stable with homebrew python"
+      language: generic
+      before_install:
+       - brew update
+       - which python3 || brew install python3
+       - pip install numpy
+      install: travis_wait 180 brew install ./Formula/rdkit.rb --build-from-source --with-python3
       env:
         - version=current HOMEBREW_DEVELOPER=1
+    - name: "HEAD with Travis python38"
+      language: python
+      python: "3.8"
+      before_install:
+       - brew update
+       - pip install numpy
+      install: travis_wait 180 brew install ./Formula/rdkit.rb --HEAD --build-from-source --with-python3
+      env:
+        - version=HEAD HOMEBREW_DEVELOPER=1
+    - name: "Stable with Travis python38"
+      language: python
+      python: "3.8"
+      before_install:
+        - brew update
+        - pip install numpy
+      install: travis_wait 180 brew install ./Formula/rdkit.rb --build-from-source --with-python3
+      env:
+        - version=current HOMEBREW_DEVELOPER=1
+
+   
