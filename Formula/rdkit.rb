@@ -49,7 +49,10 @@ class Rdkit < Formula
     python_version = "python" + %x(#{python_executable} -c 'import sys;print(sys.version[:3])').chomp
     args << "-DPYTHON_EXECUTABLE='#{python_executable}'"
     args << "-DPYTHON_INCLUDE_DIR='#{python_include}'"
-
+    
+    # Install numpy
+    system "#{python_executable} -m pip install numpy"
+    
     # Get numpy location
     numpy_include = %x(#{python_executable} -c 'import numpy;print(numpy.get_include())').chomp
     args << "-DPYTHON_NUMPY_INCLUDE_PATH='#{numpy_include}'"
