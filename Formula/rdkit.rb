@@ -29,8 +29,16 @@ class Rdkit < Formula
   depends_on "py3cairo" if build.with? "pycairo"
 
   def install
-    ENV['CXXFLAGS'] = '-std=c++11 -stdlib=libc++ -Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
     ENV['CFLAGS'] = '-Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
+    ENV['CXXFLAGS'] = '-std=c++11 -Wno-parentheses -Wno-logical-op-parentheses -Wno-format'
+    cpp_version_str = `c++ --version`
+    if cpp_version_str.include? "clang"
+      puts "detected clang C++ compiler"
+      ENV['CXXFLAGS'] += ' -stdlib=libc++'
+    else
+      puts "assuming GCC C++ compiler"
+      # g++ doesn't accept/need the option: -stdlib=libc++
+    end
 
     args = std_cmake_args
     args << "-DRDK_INSTALL_INTREE=OFF"
