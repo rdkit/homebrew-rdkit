@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/local/bin/python3.9
+# we have to use the python interpreter installed by brew...
 
 # quick check that rdkit is installed and working
 # upon success, the installed rdkit version is printed out
