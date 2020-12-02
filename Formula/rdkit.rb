@@ -13,8 +13,8 @@ class Rdkit < Formula
   option 'with-inchi', 'Build with InChI support'
   option 'with-postgresql', 'Build with PostgreSQL database cartridge'
   option 'with-avalon', 'Build with Avalon support'
-  option "with-pycairo", "Build with py2cairo/py3cairo support"
-  option "without-numpy", "Use your own numpy instead of Homebrew's numpy"
+  option 'with-pycairo', 'Build with py2cairo/py3cairo support'
+  option 'without-numpy', "Use your own numpy instead of Homebrew's numpy"
 
   depends_on "cmake" => :build
   depends_on "swig" => :build if build.with? 'java'
@@ -48,7 +48,7 @@ class Rdkit < Formula
     args << "-DRDK_BUILD_PGSQL=ON" if build.with? "postgresql"
     args << "-DRDK_BUILD_INCHI_SUPPORT=ON" if build.with? "inchi"
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
-    args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
+    args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? "postgresql"
     args << '-DRDK_BUILD_CAIRO_SUPPORT=ON' if build.with? "pycairo"
     args << '-DBoost_NO_BOOST_CMAKE=ON'
 
