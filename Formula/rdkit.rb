@@ -49,6 +49,7 @@ class Rdkit < Formula
     args << "-DRDK_BUILD_INCHI_SUPPORT=ON" if build.with? "inchi"
     args << '-DRDK_BUILD_CPP_TESTS=OFF'
     args << '-DRDK_INSTALL_STATIC_LIBS=OFF' unless build.with? 'postgresql'
+    args << '-DRDK_BUILD_CAIRO_SUPPORT=ON' if build.with? "pycairo"
     args << '-DBoost_NO_BOOST_CMAKE=ON'
 
     # Get Python location
