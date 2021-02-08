@@ -10,21 +10,33 @@ After tapping this repo with
 
 You can install [rdkit](http://rdkit.org) with just one line of command:
 
-    brew install rdkit
+    brew install rdkit --with-python3
 
 If you want to stay on the edge and use the latest and greatest from GitHub:
 
-    brew install --HEAD rdkit
-
+    brew install --HEAD rdkit --with-python3
 
 ### Optional installs
 
 - `--with-python3` will install the Python 3 wrapper.
 - `--with-java` will install the Java wrapper.
 - `--with-inchi` will install the InChI support. This will download InChI from http://inchitrust.org if necessary.
-- `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source. 
+- `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source.
 - `--with-postgresql` will install the PostgreSQL cartridge.
 - `--with-pycairo` if you want to draw molecules with Cairo.
+
+### Forcing brew to install rdkit and all its dependencies from scratch
+
+Brew is not a very smart or reliable package manager.
+If you encounter any error, you might try the following to force installing
+rdkit:
+
+    # backup your brew installed packages list
+    brew list --formula > my_brew_packages.txt
+    # uninstall all of them
+    brew uninstall --force $(cat my_brew_packages.txt)
+    # install rdkit from scratch
+    brew install rdkit --with-python3
 
 ### Errors you might encounter
 
