@@ -20,7 +20,7 @@ If you want to stay on the edge and use the latest and greatest from GitHub:
 
 - `--with-python3` will install the Python 3 wrapper.
 - `--with-java` will install the Java wrapper.
-- `--with-inchi` will install the InChI support. This will download InChI from http://inchi-trust.org if necessary.
+- `--with-inchi` will install the InChI support. This will download InChI from https://inchi-trust.org if necessary.
 - `--with-avalon` will install the Avalon toolkit support. This will download the Avalon Toolkit source.
 - `--with-postgresql` will install the PostgreSQL cartridge.
 - `--with-pycairo` if you want to draw molecules with Cairo.
