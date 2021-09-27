@@ -1,3 +1,10 @@
+```
+WARNING: this repository is outdated. Please consider using the more recent brew formula
+WARNING: to install rdkit. The new formula does not require you to use the rdkit/rdkit tap
+WARNING: and installs python bindings.
+WARNING: Cf. https://formulae.brew.sh/formula/rdkit#default (brew install rdkit).
+```
+
 [![Build status](https://travis-ci.org/rdkit/homebrew-rdkit.svg)](https://travis-ci.org/rdkit/homebrew-rdkit)
 
 # Homebrew-rdkit: tap-ready formula for rdkit
