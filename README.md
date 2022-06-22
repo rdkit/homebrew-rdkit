@@ -2,6 +2,7 @@
 WARNING: this repository is outdated. Please consider using the more recent brew formula
 WARNING: to install rdkit. The new formula does not require you to use the rdkit/rdkit tap
 WARNING: and installs python bindings.
+WARNING: pip might be able to install rdkit also: pip3 install rdkit
 WARNING: Cf. https://formulae.brew.sh/formula/rdkit#default (brew install rdkit).
 ```
 
